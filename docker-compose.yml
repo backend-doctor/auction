@@ -1,0 +1,63 @@
+services:
+    gateway:
+        build: 
+            context: ./gateway/docker
+            dockerfile: ./development/nginx/nginx.dockerfile
+        container_name: ${PROJECT_NAME}-gateway
+        # volumes:
+        #     - ./docker/frontend/development/nginx/conf.d:/etc/nginx/conf.d
+        #     - ./docker/frontend/development/nginx/log:/var/log/nginx/
+        ports:
+            - 8080:8080
+            - 8081:8081
+        depends_on:
+            - frontend
+            - api
+    api-php-fpm:
+        build:
+            context: ./api/docker
+            # args:
+            #     user: ${USER}
+            #     uid: 1000
+            dockerfile: ./development/php-fpm/php.dockerfile
+        # restart: unless-stopped
+        container_name: ${PROJECT_NAME}-api-php-fpm
+        # image: api-php-fpm
+        volumes:
+            - ./api:/app
+            # - ./docker/api/common/php/conf.d:/etc/php/conf.d
+        networks:
+            - my-network
+    api:
+        build: 
+            context: ./api/docker
+            dockerfile: ./development/nginx/nginx.dockerfile
+        # restart: unless-stopped
+        depends_on:
+            - api-php-fpm
+        container_name: ${PROJECT_NAME}-api
+        # image: api
+        volumes:
+            - ./api:/app
+            # - ./development/nginx/conf.d:/etc/nginx/conf.d
+        # ports:
+        #     - ${API_PORT}:80
+        networks:
+            - my-network
+    frontend:
+        build: 
+            context: ./frontend/docker
+            dockerfile: ./development/nginx/nginx.dockerfile
+        # restart: unless-stopped
+        # depends_on:
+        #     - api
+        container_name: ${PROJECT_NAME}-frontend
+        volumes:
+            - ./frontend:/app
+            # - ./docker/frontend/development/nginx/conf.d:/etc/nginx/conf.d
+            # - ./docker/frontend/development/nginx/log:/var/log/nginx/
+        # ports:
+        #     - ${FRONTEND_PORT}:80
+networks:
+    my-network:
+        driver: bridge
