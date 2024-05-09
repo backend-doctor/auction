@@ -1,0 +1,4 @@
+certbot_email: mail@my-auction
+certbot_hosts:
+    - demo-auction.my-auction
+    - api.demo-auction.my-auction
