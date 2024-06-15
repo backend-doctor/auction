@@ -18,4 +18,3 @@
         -   name: Remove useless dependencies
             apt:
                 autoremove: yes
-
