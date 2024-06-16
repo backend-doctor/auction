@@ -12,14 +12,31 @@ services:
         depends_on:
             - frontend
             - api
+
     api-php-fpm:
         build:
             context: ./api/docker
             dockerfile: ./development/php-fpm/php.dockerfile
         container_name: ${PROJECT_NAME}-api-php-fpm
+        environment:
+            APP_DEBUG: 1
+            APP_ENV: dev
         volumes:
             - ./api:/app
             - ./nginx-log/api-php-fpm:/var/log/nginx
+
+    api-php-cli:
+        build:
+            args:
+                user: ${USER}
+                uid: 1000
+                group: ${USER}
+            context: ./api/docker
+            dockerfile: ./development/php-cli/Dockerfile
+        container_name: ${PROJECT_NAME}-api-php-cli
+        volumes:
+            - ./api:/app
+
     api:
         build:
             context: ./api/docker
@@ -30,6 +47,7 @@ services:
         volumes:
             - ./api:/app
             - ./nginx-log/api:/var/log/nginx
+
     frontend:
         build:
             context: ./frontend/docker
