@@ -2,9 +2,12 @@ FROM php:7.4-fpm-alpine
 
 RUN apk add unzip
 
+RUN docker-php-ext-install php-opcache
+
 RUN mv $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
 
 COPY ./docker/common/php/conf.d /usr/local/etc/php/conf.d
+COPY ./production/php/conf.d /usr/local/etc/php/conf.d
 
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
@@ -17,6 +20,6 @@ WORKDIR /app
 COPY composer.json composer.lock ./
 
 RUN composer install --no-dev --prefer-dist --no-progress --no-suggest --optimize-autoloader \
-&& rm -rf /root/.composer/cache
+    && rm -rf /root/.composer/cache
 
 COPY . .
