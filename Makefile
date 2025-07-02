@@ -24,11 +24,11 @@ build-gateway:
 	docker --log-level=debug build --pull --file=gateway/docker/production/nginx/Dockerfile --tag=${REGISTRY}/auction-gateway:${IMAGE_TAG} gateway/docker
 
 build-frontend:
-	docker --log-level=debug build --pull --file=frontend/docker/production/nginx/Dockerfile --tag=${REGISTRY}/auction-frontend:${IMAGE_TAG} frontend
+	docker --log-level=debug build --pull --file=frontend/docker/production/nginx/nginx.Dockerfile --tag=${REGISTRY}/auction-frontend:${IMAGE_TAG} frontend
 
 build-api:
-	docker --log-level=debug build --pull --file=api/docker/production/nginx/Dockerfile --tag=${REGISTRY}/auction-api:${IMAGE_TAG} api
-	docker --log-level=debug build --pull --file=api/docker/production/php-fpm/Dockerfile --tag=${REGISTRY}/auction-api-php-fpm:${IMAGE_TAG} api
+	docker --log-level=debug build --pull --file=api/docker/production/nginx/nginx.dockerfile --tag=${REGISTRY}/auction-api:${IMAGE_TAG} api
+	docker --log-level=debug build --pull --file=api/docker/production/php-fpm/php.dockerfile --tag=${REGISTRY}/auction-api-php-fpm:${IMAGE_TAG} api
 	docker --log-level=debug build --pull --file=api/docker/production/php-cli/Dockerfile --tag=${REGISTRY}/auction-api-php-cli:${IMAGE_TAG} api
 
 api-init: api-composer-install

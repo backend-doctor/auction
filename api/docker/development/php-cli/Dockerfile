@@ -1,28 +1,15 @@
 FROM php:7.4-cli-alpine
 
-ARG user
-ARG group
-ARG uid
-
 RUN apk update && apk add unzip
 
-RUN mv $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
+RUN mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
 
 COPY ./common/php/conf.d /usr/local/etc/php/conf.d
 
-RUN curl -s https://getcomposer.org/installer | php -- --install-dir=bin --filename=composer --quiet
+ENV COMPOSER_ALLOW_SUPERUSER 1
 
-RUN addgroup \
-    ${group} \
-&&  adduser \
-    --disabled-password \
-    --gecos "" \
-    --ingroup ${group} \
-    --no-create-home \
-    --uid ${uid} \
-    ${user}
-
-USER ${user}
-
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --version=1.10.26 --quiet \
+    && composer global require hirak/prestissimo --no-plugins --no-scripts \
+    && rm -rf /root/.composer/cache
 
 WORKDIR /app
