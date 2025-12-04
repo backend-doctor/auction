@@ -35,6 +35,8 @@ api-init: api-composer-install
 
 api-composer-install:
 	docker compose run --rm api-php-cli composer update
+api-lint:
+	docker compose run --rm api-php-cli composer lint
 
 try-build:
 	REGISTRY=localhost IMAGE_TAG=0 make build
