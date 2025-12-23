@@ -2,6 +2,7 @@ init: docker-down-clear docker-pull docker-build docker-up api-init
 up: docker-up
 down: docker-down
 restart: down up
+analyze: api-analyze
 
 docker-up: docker-down
 	docker compose up -d
@@ -37,6 +38,9 @@ api-composer-install:
 	docker compose run --rm api-php-cli composer update
 api-lint:
 	docker compose run --rm api-php-cli composer lint
+	docker compose run --rm api-php-cli composer cs-check
+api-analyze:
+	docker compose run --rm api-php-cli composer psalm
 
 try-build:
 	REGISTRY=localhost IMAGE_TAG=0 make build

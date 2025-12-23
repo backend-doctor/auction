@@ -8,6 +8,11 @@ use Slim\Psr7\Response;
 
 class JsonResponse extends Response
 {
+    /**
+     * Summary of __construct
+     * @param array$data
+     * @param int $status
+     */
     public function __construct($data, int $status = 200)
     {
         parent::__construct(
