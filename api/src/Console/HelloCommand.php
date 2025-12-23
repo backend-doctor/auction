@@ -18,5 +18,4 @@ class HelloCommand extends Command
         $output->writeln('<info>Hello</info>');
         return 0;
     }
-
 }

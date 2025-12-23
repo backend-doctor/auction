@@ -13,7 +13,8 @@ use stdClass;
 class HomeAction implements RequestHandlerInterface
 {
     private ResponseFactory $factory;
-    public function __construct(ResponseFactory $responseFactory) {
+    public function __construct(ResponseFactory $responseFactory)
+    {
         $this->factory = $responseFactory;
     }
     public function handle(ServerRequestInterface $request): ResponseInterface
